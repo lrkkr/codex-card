@@ -14,8 +14,13 @@ const appWindow = getCurrentWindow();
 const planName = getElement("plan-name");
 const statusDot = getElement("status-dot");
 const message = getElement("message");
+const themeButton = getButton("theme-button");
+const pinButton = getButton("pin-button");
 const refreshButton = getButton("refresh-button");
 const closeButton = getButton("close-button");
+const themeStorageKey = "codex-card-theme";
+
+type Theme = "light" | "dark";
 
 function getElement(id: string): HTMLElement {
   const element = document.getElementById(id);
@@ -48,6 +53,36 @@ function setLoading(isLoading: boolean): void {
   refreshButton.classList.toggle("spinning", isLoading);
 }
 
+function setTheme(theme: Theme): void {
+  const nextTheme = theme === "dark" ? "light" : "dark";
+  document.documentElement.dataset.theme = theme;
+  localStorage.setItem(themeStorageKey, theme);
+  themeButton.setAttribute("aria-label", `Switch to ${nextTheme} theme`);
+  themeButton.title = `Switch to ${nextTheme} theme`;
+}
+
+function updatePinButton(isAlwaysOnTop: boolean): void {
+  const action = isAlwaysOnTop ? "Disable" : "Enable";
+  pinButton.classList.toggle("active", isAlwaysOnTop);
+  pinButton.setAttribute("aria-pressed", String(isAlwaysOnTop));
+  pinButton.setAttribute("aria-label", `${action} always on top`);
+  pinButton.title = `${action} always on top`;
+}
+
+function initializeTheme(): void {
+  const savedTheme = localStorage.getItem(themeStorageKey);
+  const prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
+  setTheme(savedTheme === "light" || savedTheme === "dark" ? savedTheme : prefersLight ? "light" : "dark");
+}
+
+async function initializePin(): Promise<void> {
+  try {
+    updatePinButton(await appWindow.isAlwaysOnTop());
+  } catch (error) {
+    console.error("Could not read always-on-top state:", error);
+  }
+}
+
 async function updateUsage(): Promise<void> {
   setLoading(true);
   message.textContent = "Refreshing usage...";
@@ -71,8 +106,25 @@ async function updateUsage(): Promise<void> {
   }
 }
 
+themeButton.addEventListener("click", () => {
+  setTheme(document.documentElement.dataset.theme === "light" ? "dark" : "light");
+});
+pinButton.addEventListener("click", async () => {
+  const shouldPin = pinButton.getAttribute("aria-pressed") !== "true";
+  pinButton.disabled = true;
+  try {
+    await appWindow.setAlwaysOnTop(shouldPin);
+    updatePinButton(shouldPin);
+  } catch (error) {
+    message.textContent = String(error);
+  } finally {
+    pinButton.disabled = false;
+  }
+});
 refreshButton.addEventListener("click", () => void updateUsage());
 closeButton.addEventListener("click", () => void appWindow.close());
 
+initializeTheme();
+void initializePin();
 void updateUsage();
 window.setInterval(() => void updateUsage(), refreshIntervalMs);

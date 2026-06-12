@@ -11,12 +11,23 @@
       <header class="header" data-tauri-drag-region>
         <div class="identity" data-tauri-drag-region>
           <span class="status-dot" id="status-dot" aria-hidden="true"></span>
-          <div data-tauri-drag-region>
-            <p class="eyebrow" data-tauri-drag-region>Codex usage</p>
-            <h1 id="plan-name" data-tauri-drag-region>Loading...</h1>
-          </div>
+          <h1 id="plan-name" data-tauri-drag-region>Loading...</h1>
         </div>
         <div class="actions">
+          <button id="theme-button" type="button" aria-label="Switch to light theme" title="Switch to light theme">
+            <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="4" />
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41" />
+            </svg>
+            <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5 8.5 8.5 0 1 0 20.5 14.2Z" />
+            </svg>
+          </button>
+          <button id="pin-button" type="button" aria-label="Disable always on top" title="Disable always on top" aria-pressed="true">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m14 4 6 6-3 1-4 4-1 5-3-3-4 4-2-2 4-4-3-3 5-1 4-4 1-3Z" />
+            </svg>
+          </button>
           <button id="refresh-button" type="button" aria-label="Refresh usage" title="Refresh usage">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M20 12a8 8 0 1 1-2.34-5.66L20 8.68M20 4v4.68h-4.68" />
@@ -39,7 +50,6 @@
           <div class="progress-track" role="progressbar" aria-label="Session usage" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
             <div id="session-bar" class="progress-fill"></div>
           </div>
-          <p>5-hour limit</p>
         </article>
 
         <article class="metric">
@@ -50,7 +60,6 @@
           <div class="progress-track" role="progressbar" aria-label="Weekly usage" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
             <div id="weekly-bar" class="progress-fill"></div>
           </div>
-          <p>7-day limit</p>
         </article>
       </section>
 

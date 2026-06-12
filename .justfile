@@ -3,6 +3,7 @@ set windows-shell := ["pwsh.exe", "-NoLogo", "-Command"]
 alias p := push
 alias c := check
 alias b := build
+alias uv := update-version
 
 default:
   just --list
@@ -37,6 +38,20 @@ dev:
 build:
   pnpm tauri build
 
-update:
+fmt:
+  cd src-tauri && cargo fmt
+
+update-deps:
   pnpm upgrade
+  pnpm update
+  pnpm i
+  cargo upgrade --manifest-path src-tauri/Cargo.toml
+  cargo update --manifest-path src-tauri/Cargo.toml
   
+[windows]
+update-version VERSION:
+  python scripts/update.py -v {{ VERSION }}
+
+[linux]
+update-version VERSION:
+  uv run scripts/update.py -v {{ VERSION }}

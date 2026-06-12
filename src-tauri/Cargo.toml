@@ -1,23 +1,34 @@
 [package]
 name = "codex-card"
-version = "0.1.0"
+version = "0.1.1"
 description = "A minimalist floating widget for Codex subscription usage"
-authors = ["Codex Card contributors"]
+authors = [ "Codex Card contributors",]
 edition = "2024"
 
 [lib]
 name = "codex_card_lib"
-crate-type = ["staticlib", "cdylib", "rlib"]
-
-[build-dependencies]
-tauri-build = { version = "2", features = [] }
+crate-type = [ "staticlib", "cdylib", "rlib",]
 
 [dependencies]
 dirs = "6"
-reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
-serde = { version = "1", features = ["derive"] }
 serde_json = "1"
-tauri = { version = "2", features = [] }
 
 [dev-dependencies]
 tempfile = "3"
+
+[dependencies.reqwest]
+version = "0.12"
+default-features = false
+features = [ "json", "rustls-tls",]
+
+[dependencies.serde]
+version = "1"
+features = [ "derive",]
+
+[dependencies.tauri]
+version = "2"
+features = []
+
+[build-dependencies.tauri-build]
+version = "2"
+features = []
