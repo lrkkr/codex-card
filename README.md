@@ -7,6 +7,12 @@ dashboard, account setup, or other distractions. It reads your existing Codex
 CLI login locally and displays the current session and weekly usage percentages
 in a compact Tauri window.
 
+## Preview
+
+| Light | Dark |
+| --- | --- |
+| ![Codex Card light theme](figures/light.png) | ![Codex Card dark theme](figures/dark.png) |
+
 ## Features
 
 - **Focused by design**: displays only the 5-hour session and 7-day weekly
